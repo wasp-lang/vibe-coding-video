@@ -1,0 +1,100 @@
+app shadcnAdminWasp {
+  wasp: {
+    version: "^0.16.2"
+  },
+  title: "shadcn-admin-wasp",
+  head: [
+    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />",
+    "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />",
+    "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />",
+    "<link href=\"https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap\" rel=\"stylesheet\" />"
+  ],
+  auth: {
+    userEntity: User,
+    methods: {
+      usernameAndPassword: {},
+      // google: {},
+      // github: {},
+    },
+    onAuthFailedRedirectTo: "/sign-in",
+    onAuthSucceededRedirectTo: "/",
+  },
+  client: {
+    rootComponent: import Main from "@src/main",
+    setupFn: import QuerySetup from "@src/config/querySetup",
+  }
+}
+
+
+route SignupRoute { path: "/sign-up", to: Signup }
+page Signup {
+  component: import { Signup } from "@src/features/auth/signup"
+}
+
+route LoginRoute { path: "/sign-in", to: Login }
+page Login {
+  component: import { Login } from "@src/features/auth/login"
+}
+
+route ChatsRoute { path: "/chats", to: Chats }
+page Chats {
+  component: import Chats from "@src/features/chats/index"
+}
+
+route SettingsRoute { path: "/settings/*", to: Settings }
+page Settings {
+  component: import Settings from "@src/features/settings/index"
+}
+
+// TODO: add route
+// route HelpCenterRoute { path: "/help-center", to: HelpCenter }
+// page HelpCenter {
+//   component: import { HelpCenter } from "@src/features/help-center/index"
+// }
+
+route DashboardRoute { path: "/", to: Dashboard }
+page Dashboard {
+  component: import Dashboard from "@src/features/dashboard/index"
+}
+
+route TasksRoute { path: "/tasks", to: Tasks }
+page Tasks {
+  component: import Tasks from "@src/features/tasks/index"
+}
+
+route AppsRoute { path: "/apps", to: Apps }
+page Apps {
+  component: import Apps from "@src/features/apps/index"
+}
+
+route UsersRoute { path: "/users", to: Users }
+page Users {
+  component: import Users from "@src/features/users/index"
+}
+
+//#region Error Routes
+route GeneralErrorRoute { path: "/500", to: GeneralError }
+page GeneralError {
+  component: import GeneralError from "@src/features/errors/general-error"
+}
+
+route NotFoundRoute { path: "/404", to: NotFound }
+page NotFound {
+  component: import NotFound from "@src/features/errors/not-found-error"
+}
+
+route ForbiddenRoute { path: "/403", to: Forbidden }
+page Forbidden {
+  component: import Forbidden from "@src/features/errors/forbidden"
+}
+
+route UnauthorizedRoute { path: "/401", to: Unauthorized }
+page Unauthorized {
+  component: import Unauthorized from "@src/features/errors/unauthorized-error"
+}
+
+route MaintenanceRoute { path: "/maintenance", to: Maintenance }
+page Maintenance {
+  component: import Maintenance from "@src/features/errors/maintenance-error"
+}
+//#endregion
