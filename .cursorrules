@@ -1,10 +1,214 @@
-## General Wasp Rules
+# General Info
 
+This is a Wasp full-stack web application project. Always consider the following background information and rules when planning and implementing app features.
+
+## Quick Reference
+
+### Common Patterns
+- Define app structure in `main.wasp` or `main.wasp.ts`
+- Define data models in `schema.prisma`
+- Group feature code in `src/features/{featureName}`
+- Group feature config definitions (e.g. routes, pages, operations, etc.) into sections within the Wasp config file using the `//#region` directive.
+  - e.g. `//#region {FeatureName}` ... `//#endregion`
+- Use operations (queries/actions) for client-server communication
+- Import from 'wasp/...' not '@wasp/...'
+- Document features in `./ai/docs` with:
+  - One markdown file per feature (e.g. `./ai/docs/{featureName}.md`)
+  - Operations specifications and data models
+  - User workflows and business logic
+  - Update documentation when implementing feature changes
+- Reference the relevant `./ai/docs` files when writing or modifying feature code
+
+### Common Issues
+- If imports aren't working, check path format ('wasp/...' not '@wasp/...')
+- If entities aren't available in operations, check they're listed in the operation definition
+- If auth isn't working, ensure auth config is properly set up in main.wasp
+
+## Background Information
+
+### What is Wasp
+
+- Wasp (Web Application SPecification language) is a declarative, statically typed, domain-specific language (DSL) for building modern, full-stack web applications.
+- Unlike traditional frameworks that are sets of libraries, Wasp is a simple programming language that understands web app concepts and generates code for you.
+- Wasp integrates with React (frontend), Node.js (backend), and Prisma (database ORM) to create full-stack web applications with minimal boilerplate.
+- The Wasp compiler reads your declarative configuration and generates all the necessary code for a working web application.
+
+### Wasp Project Structure
+
+- A Wasp project consists of a `main.wasp` (or `main.wasp.ts`) file in the root directory that defines the app's configuration.
+- The `schema.prisma` file in the root directory defines your database models.
+- Your custom code lives in the `src/` directory, which contains client-side and server-side code.
+- Wasp generates additional code that connects everything together when you run your app.
+- Feature code should be organized in `src/features/{featureName}` directories.
+
+### The main.wasp File
+
+- The `main.wasp` file is the central configuration file that defines your application structure.
+- It contains declarations for app settings, pages, routes, authentication, database entities, and operations (queries and actions).
+- Example structure:
+  ```
+  app myApp {
+    wasp: {
+      version: "^0.16.0"
+    },
+    title: "My App",
+  }
+  
+  route HomeRoute { path: "/", to: HomePage }
+  page HomePage {
+    component: import { HomePage } from "@src/client/pages/HomePage.tsx"
+  }
+  
+  query getTasks {
+    fn: import { getTasks } from "@src/server/queries.js",
+    entities: [Task]
+  }
+  ```
+
+### Wasp Database and Entities
+
+- Wasp uses Prisma for database access, with models defined in `schema.prisma`.
+- Prisma models automatically become Wasp Entities that can be used in operations.
+- Wasp reads the Prisma schema to understand your data model and generate appropriate code.
+- Example Prisma model:
+  ```
+  model Task {
+    id          Int      @id @default(autoincrement())
+    description String
+    isDone      Boolean  @default(false)
+    user        User     @relation(fields: [userId], references: [id])
+    userId      Int
+  }
+  ```
+
+### Wasp Operations
+
+- Operations are how Wasp handles client-server communication.
+- Queries (read operations) and Actions (write operations) are defined in the main.wasp file.
+- Operations automatically handle data fetching, caching, and updates.
+- Operations reference entities to establish proper access patterns and dependencies.
+- Example query and action:
+  ```
+  query getTasks {
+    fn: import { getTasks } from "@src/server/operations",
+    entities: [Task]
+  }
+  
+  action createTask {
+    fn: import { createTask } from "@src/server/operations",
+    entities: [Task]
+  }
+  ```
+
+### Wasp Auth
+
+- Wasp provides built-in authentication with minimal configuration.
+- Auth can be configured with username/password, social providers (Google, GitHub, etc.), or verified email and password .
+- Wasp generates all necessary auth routes, middleware, and UI components.
+- Example auth configuration:
+  ```
+  app myApp {
+    // ... other config
+    auth: {
+      userEntity: User,
+      methods: {
+        usernameAndPassword: {},
+        google: {}
+      },
+      onAuthFailedRedirectTo: "/login"
+    }
+  }
+  ```
+
+### Advanced Features
+
+#### Jobs and Workers
+
+- Wasp supports background jobs with the `job` declaration in main.wasp.
+- Jobs can be scheduled to run at specific intervals or triggered programmatically.
+- Example:
+  ```
+  job emailSender {
+    executor: PgBoss,
+    perform: {
+      fn: import { sendEmail } from "@src/server/jobs/emailSender.js"
+    },
+    entities: [User, Email]
+  }
+  ```
+
+#### API Routes
+
+- Custom API endpoints can be defined with the `api` declaration.
+- Useful for webhooks, or third-party integrations.
+- Example:
+  ```
+  api stripeWebhook {
+    fn: import { handleStripeWebhook } from "@src/server/apis/stripe.js",
+    httpRoute: (POST, "/stripe-webhook"),
+    entities: [User, Payment]
+  }
+  ```
+
+#### Middleware
+
+- Wasp supports custom middleware for both API routes and pages.
+- Middleware can be used for logging, authentication, or request transformation.
+- Example:
+  ```
+  api myApi {
+    fn: import { myApiHandler } from "@src/server/apis.js",
+    middlewares: [myMiddleware]
+  }
+  
+  middleware myMiddleware {
+    fn: import { myMiddlewareFn } from "@src/server/middleware.js"
+  }
+  ```
+
+### Deployment
+
+- Wasp applications can be deployed to various hosting providers.
+- Wasp has a built-in one-command deployment to fly.io, e.g. `wasp deploy fly`. See the [Wasp CLI Deployment docs](https://wasp-lang.com/docs/deployment/fly) for more information.
+
+### Error Handling
+
+- Client-side: Use try/catch blocks with async/await
+- Server-side: Use try/catch in operation functions and return appropriate error responses
+- Use HTTP status codes appropriately in API responses
+- Consider implementing a global error boundary in React
+- Example server-side error handling:
+  ```typescript
+  import { HttpError } from 'wasp/server'
+
+  export const createTask: CreateTask<{ taskId: string }, { success: boolean, data: Task }> = async (args, context) => {
+    try {
+      // Operation logic
+      return { success: true, data: newTask };
+    } catch (error) {
+      // Log error for debugging
+      console.error('Failed to create task:', error);
+      
+      // Return structured error response
+      throw new HttpError(500, 'Failed to create task', { foo: 'bar' });
+    }
+  }
+  ```
+
+## Rules
+
+### General Rules
+
+- Always reference the Wasp config file as your source of truth for the app's configuration and structure.
+- Always reference the `./ai/docs` for information on the app's features and functionality when writing code.
+- Group feature config definitions (e.g. routes, pages, operations, etc.) into sections within the Wasp config file using the `//#region` directive.
+  - e.g. `//#region Chats` ... `//#endregion`
+- Group feature code into feature directories (e.g. `src/features/chats`)
 - Use the latest Wasp version, as defined in the wasp config file (`main.wasp` or `*.wasp.ts`) in the root of the project.
-- Always use typescript for Wasp code.
 - When creating Wasp operations (queries and actions) combine them into an operations.ts file within the feature directory rather than into separate queries.ts and actions.ts files
+- Always use typescript for Wasp code
 
-## Wasp Import Rules
+### Wasp Import Rules
 
 - Path to Wasp functions within .ts files must come from 'wasp', not '@wasp'!
   - Examples to follow ✅:
@@ -20,14 +224,18 @@
   - Examples to avoid ❌:
     - `component: import { LoginPage } from "@client/pages/auth/LoginPage.tsx"`
 - In the client's root component, use the Outlet component rather than children
+- Common import errors:
+  - "Cannot find module 'wasp/...'": Check that you're using 'wasp/' not '@wasp/'
+  - "Cannot find module '@src/...'": In .ts files, use relative imports, not '@src'
 
-## Wasp DB Schema Rules
+### Wasp DB Schema Rules
 
-- Add databse models to the `schema.prisma` file, NOT to `main.wasp` as "entities"
-- Do NOT add a db.system nor a db.prisma property to the main wasp config file. This is taken care of in `schema.prisma`
+- Add database models to the `schema.prisma` file, NOT to `main.wasp` as "entities"
+- Generally avoid adding a db.system or db.prisma property to the main wasp config file. This is taken care of in `schema.prisma`
 - Keep the `schema.prisma` within the root of the project
+- When updating schema.prisma, run `wasp db migrate dev` to apply changes
 
-## Wasp Operations
+### Wasp Operations
 
 - Types are generated automatically from the function definition in the wasp config file
   - `import type { GetTimeLogs, CreateTimeLog, UpdateTimeLog } from 'wasp/server/operations'`
@@ -35,29 +243,87 @@
   - `import type { Project, TimeLog } from 'wasp/entities'`
 - Make sure that all Entities that should be included in the operations context are defined in its definition in the wasp config file
   - `action createTimeLog { fn: import { createTimeLog } from "@src/server/timeLogs/operations.js", entities: [TimeLog, Project] }`
+- Prioritize the use of Wasp operations for internal client-server communication and only create an API route for external communication to the server (e.g. for Stripe payments).
+- Use Wasp's useQuery hook, `import { useQuery } from 'wasp/client/operations'`, to fetch data from the server.
+- Call actions directly from the client (e.g. in a button click handler) unless you need optimistic updates (then use the useAction hook).
+- Example operation implementation:
+  ```typescript
+  // Server-side operation
+  export const getTasks: GetTasks<void, Task[]> = async (_args, context) => {
+    if (!context.user) {
+      throw new HttpError(401, 'Not authorized');
+    }
+    return context.entities.Task.findMany({
+      where: { userId: context.user.id }
+    });
+  }
+  
+  // Client-side usage
+  const { data: tasks, isLoading, error } = useQuery(getTasks);
+  ```
 
-## Wasp Auth
+### Wasp Auth
 
-- When creating Auth pages, use the LoginForm and SignupForm components provided by Wasp
+- When initially creating Auth pages, use the LoginForm and SignupForm components provided by Wasp
   - `import { LoginForm } from 'wasp/client/auth'`
 - Wasp takes care of creating the user's auth model id, username, and password for a user, so a user model DOES NOT need these properties
   - `model User { id Int @id @default(autoincrement()) }`
+- For protected routes, use the useAuth hook:
+  ```typescript
+  import { useAuth } from 'wasp/client/auth';
+  
+  const MyProtectedComponent = () => {
+    const { data: user, isLoading, error } = useAuth();
+    
+    if (isLoading) return <div>Loading...</div>;
+    if (error || !user) return <div>Please log in</div>;
+    
+    return <div>Hello, {user.username}!</div>;
+  };
+  ```
 
-## Wasp Dependencies
+### Wasp Dependencies
 
-- Do NOT add dependencies to the wasp config file
+- Generally avoid adding dependencies to the wasp config file
 - Install dependencies via `npm install` instead
 
-## React
+### React
 
 - Use relative imports for other react components
 - If importing a function from an operations file, defer to the wasp import rules
+- Use React hooks for state management and side effects
+- Consider using React Context for global state that doesn't need server persistence
 
-## TailwindCSS
+### TailwindCSS
 
 - Use Tailwind CSS for styling.
-- Do not use inline styles unless necessary
+- Generally avoid inline styles unless necessary
+- For complex components, consider creating reusable Tailwind classes using @apply
+- For responsive design, use Tailwind's responsive prefixes (sm:, md:, lg:, etc.)
 
-## General
+### Performance Optimization
 
-- Use single quotes
+- Use proper dependencies in queries and actions to avoid unnecessary refetching
+- Implement pagination for large data sets
+- Use React.memo, useMemo, and useCallback for expensive computations
+- Consider implementing optimistic UI updates for better user experience
+- Example optimistic update:
+  ```typescript
+  import { useAction } from 'wasp/client/operations';
+  
+  const { execute: deleteTask, isExecuting } = useAction(deleteTask, {
+    optimisticUpdates: {
+      getTasks: (data, args, taskId) => {
+        return data.filter(task => task.id !== taskId);
+      }
+    }
+  });
+  ```
+
+### Troubleshooting
+
+- If operations aren't working, check that entities are properly defined in the operation declaration
+- If auth isn't working, verify auth configuration in main.wasp and check that userEntity matches your User model
+- For database issues, check Prisma schema and run `wasp db migrate dev` to apply changes
+- For build errors, check import paths and ensure all dependencies are installed
+- Use the Wasp dev console and browser console for debugging information
