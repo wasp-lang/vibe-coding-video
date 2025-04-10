@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { toast } from '../hooks/use-toast'
+import { toast } from '../../hooks/use-toast'
 
 export function handleServerError(error: unknown) {
   // eslint-disable-next-line no-console

@@ -1,4 +1,5 @@
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { IconBrowserCheck, IconNotification, IconPalette, IconTool, IconUser } from '@tabler/icons-react';
 import { Separator } from '../../components/ui/separator';
 import { Header } from '../../components/layout/header';
@@ -14,6 +15,15 @@ import SettingsNotifications from './notifications';
 import SettingsDisplay from './display';
 
 export default function Settings() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Redirect to profile page by default when accessing /settings
+  useEffect(() => {
+    if (location.pathname === '/settings') {
+      navigate('profile');
+    }
+  }, [location.pathname, navigate]);
   return (
     <>
       {/* ===== Top Heading ===== */}
@@ -37,7 +47,7 @@ export default function Settings() {
           </aside>
           <div className='flex w-full overflow-y-hidden p-1 pr-4'>
             <Routes>
-              <Route path='/' element={<SettingsProfile />} />
+              <Route path='/profile' element={<SettingsProfile />} />
               <Route path='/account' element={<SettingsAccount />} />
               <Route path='/appearance' element={<SettingsAppearance />} />
               <Route path='/notifications' element={<SettingsNotifications />} />
@@ -54,7 +64,7 @@ const sidebarNavItems = [
   {
     title: 'Profile',
     icon: <IconUser size={18} />,
-    href: 'settings',
+    href: 'profile',
   },
   {
     title: 'Account',

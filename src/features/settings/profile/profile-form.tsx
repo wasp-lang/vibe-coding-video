@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'wasp/client/router'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/cn'
 import { toast } from '../../../hooks/use-toast'
 import { Button } from '../../../components/ui/button'
 import {

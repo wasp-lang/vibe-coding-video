@@ -1,8 +1,8 @@
-app shadcnAdminWasp {
+app vibeCodeWasp {
   wasp: {
-    version: "^0.16.2"
+    version: "^0.16.3"
   },
-  title: "shadcn-admin-wasp",
+  title: "Vibe Coding with Wasp",
   head: [
     "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />",
     "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />",
@@ -16,45 +16,38 @@ app shadcnAdminWasp {
       // google: {},
       // github: {},
     },
-    onAuthFailedRedirectTo: "/sign-in",
+    onAuthFailedRedirectTo: "/login",
     onAuthSucceededRedirectTo: "/",
   },
   client: {
     rootComponent: import Main from "@src/main",
     setupFn: import QuerySetup from "@src/config/querySetup",
-  }
+  },
+  server: {
+    middlewareConfigFn: import { serverMiddlewareFn } from "@src/config/serverSetup",
+  },
 }
 
-
+//#region Auth Routes
 route SignupRoute { path: "/sign-up", to: Signup }
 page Signup {
   component: import { Signup } from "@src/features/auth/signup"
 }
 
-route LoginRoute { path: "/sign-in", to: Login }
+route LoginRoute { path: "/login", to: Login }
 page Login {
   component: import { Login } from "@src/features/auth/login"
+}
+//#endregion
+
+route DashboardRoute { path: "/", to: Dashboard }
+page Dashboard {
+  component: import Dashboard from "@src/features/dashboard/index"
 }
 
 route ChatsRoute { path: "/chats", to: Chats }
 page Chats {
   component: import Chats from "@src/features/chats/index"
-}
-
-route SettingsRoute { path: "/settings/*", to: Settings }
-page Settings {
-  component: import Settings from "@src/features/settings/index"
-}
-
-// TODO: add route
-// route HelpCenterRoute { path: "/help-center", to: HelpCenter }
-// page HelpCenter {
-//   component: import { HelpCenter } from "@src/features/help-center/index"
-// }
-
-route DashboardRoute { path: "/", to: Dashboard }
-page Dashboard {
-  component: import Dashboard from "@src/features/dashboard/index"
 }
 
 route TasksRoute { path: "/tasks", to: Tasks }
@@ -71,6 +64,18 @@ route UsersRoute { path: "/users", to: Users }
 page Users {
   component: import Users from "@src/features/users/index"
 }
+
+route SettingsRoute { path: "/settings/*", to: Settings }
+page Settings {
+  component: import Settings from "@src/features/settings/index"
+}
+
+// TODO: add route
+// route HelpCenterRoute { path: "/help-center", to: HelpCenter }
+// page HelpCenter {
+//   component: import { HelpCenter } from "@src/features/help-center/index"
+// }
+
 
 //#region Error Routes
 route GeneralErrorRoute { path: "/500", to: GeneralError }

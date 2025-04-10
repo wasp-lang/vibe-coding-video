@@ -1,5 +1,5 @@
 import React from 'react'
-import { cn } from '../../lib/utils'
+import { cn } from '../../lib/cn'
 import { Separator } from '../ui/separator'
 import { SidebarTrigger } from '../ui/sidebar'
 

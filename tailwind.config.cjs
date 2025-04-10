@@ -1,11 +1,11 @@
-const { resolveProjectPath } = require('wasp/dev')
-import tailwindCssAnimate from 'tailwindcss-animate'
-import defaultTheme from 'tailwindcss/defaultTheme'
+import { resolveProjectPath } from 'wasp/dev';
+import tailwindCssAnimate from 'tailwindcss-animate';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
-const fonts = ['inter', 'manrope', 'system']
+const fonts = ['inter', 'manrope', 'system'];
 
 // Use destructuring with fallback to ensure fontFamily is defined
-const { fontFamily = { sans: ['sans-serif'] } } = defaultTheme || {}
+const { fontFamily = { sans: ['sans-serif'] } } = defaultTheme || {};
 
 /** @type {import('tailwindcss').Config} */
 export default {

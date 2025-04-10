@@ -1,5 +1,5 @@
 import { configureQueryClient } from 'wasp/client/operations';
-import { handleServerError } from '../utils/handle-server-error';
+import { handleServerError } from '../features/errors/handle-server-error';
 import { toast } from '../hooks/use-toast';
 import { AxiosError } from 'axios';
 import { redirect } from 'react-router-dom';
