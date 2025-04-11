@@ -1,7 +1,7 @@
 ---
 description: 
-globs: *.tsx,*.jsx
-alwaysApply: false
+globs: 
+alwaysApply: true
 ---
 # 5. Frontend (React) and Styling (TailwindCSS)
 

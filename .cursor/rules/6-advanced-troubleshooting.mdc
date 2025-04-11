@@ -1,7 +1,7 @@
 ---
-description: Advance Wasp features & troubleshooting (cron jobs, api/webhook routes, middleware, performance optimization, etc.)
+description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # 6. Advanced Features & Troubleshooting
 

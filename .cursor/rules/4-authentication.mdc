@@ -1,7 +1,7 @@
 ---
-description: Wasp related auth setup, roles, user model fields & info retrieval, pages/routes, etc.
+description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # 4. Authentication
 
