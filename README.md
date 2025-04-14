@@ -8,20 +8,30 @@ The goal is to showcase a realistic workflow for building complex applications c
 
 We'll be building a collaborative envelope budgeting app inspired by tools like YNAB.
 
-## Intro
-
-"Vibe coding," as demonstrated in the video, involves:
-
-1.  **Starting with a solid foundation:** Using a full-stack framework with "batteries included" (Wasp) and a pre-built component library (Shadcn-admin) to minimize boilerplate and styling overhead.
-2.  **Leveraging AI effectively:** Using tools like Cursor with detailed AI Rules (`.cursor/rules/`) to guide the AI's understanding of the project structure, conventions, and technologies.
-3.  **Structured Development:** Defining requirements (like a PRD), creating actionable plans, and implementing features using a vertical slice pattern (building a thin slice of functionality end-to-end).
-4.  **Iterative Refinement:** Working *with* the AI, reviewing its suggestions, testing assumptions, and gradually adding complexity.
-
 ## Tech Stack
 
 *   **Framework:** [Wasp](https://wasp-lang.dev/) - A full-stack framework using a declarative DSL to integrate React, Node.js, and Prisma. It handles boilerplate like auth, database operations, and build processes.
 *   **UI Components:** [Shadcn-admin](https://github.com/satnaing/shadcn-admin/) - Admin Dashboard UI built with Shadcn and Vite.
 *   **AI Assistance:** [Cursor](https://cursor.sh/) / Gemini 2.5 Pro (or your preferred AI coding tool)
+
+## The Workflow (As Seen in the Video)
+
+The YouTube video demonstrates a workflow similar to this:
+
+1.  **Understanding the Goal:** Defining the features of the collaborative budgeting app.
+2.  **AI Setup:** Ensuring the AI (Cursor) has access to the project rules (`./cursor/rules/`).
+3.  **PRD (Product Requirements Document):** Collaboratively defining the app's requirements with the AI.
+4.  **Planning:** Breaking down the PRD into actionable, step-by-step implementation tasks suitable for the vertical slice approach.
+5.  **Implementation (Vertical Slices):**
+    *   Pick a small, end-to-end feature slice (e.g., basic manual transaction entry).
+    *   Define the necessary database models (`schema.prisma`).
+    *   Define Wasp operations (queries/actions) in `main.wasp`.
+    *   Implement server logic for operations (`src/server/...`).
+    *   Build the UI components (`src/client/...` or `src/features/...`).
+    *   Connect UI to backend using Wasp operations.
+    *   Test and refine.
+6.  **Documentation:** Asking the AI to document implemented features (e.g., in `ai/docs/`).
+7.  **Iteration:** Repeating the process for subsequent features, building upon the existing foundation, and revising the PLAN on-the-go as needed.
 
 ## Getting Started (Following Along)
 
@@ -51,26 +61,6 @@ We'll be building a collaborative envelope budgeting app inspired by tools like 
     ```
     This will launch the frontend (React app) and the backend server. Open your browser to `http://localhost:3000`.
 
-## The Workflow (As Seen in the Video)
-
-The YouTube video demonstrates a workflow similar to this:
-
-1.  **Understanding the Goal:** Defining the features of the collaborative budgeting app.
-2.  **AI Setup:** Ensuring the AI (Cursor) has access to the project rules (`./cursor/rules/`).
-3.  **PRD (Product Requirements Document):** Collaboratively defining the app's requirements with the AI.
-4.  **Planning:** Breaking down the PRD into actionable, step-by-step implementation tasks suitable for the vertical slice approach.
-5.  **Implementation (Vertical Slices):**
-    *   Pick a small, end-to-end feature slice (e.g., basic manual transaction entry).
-    *   Define the necessary database models (`schema.prisma`).
-    *   Define Wasp operations (queries/actions) in `main.wasp`.
-    *   Implement server logic for operations (`src/server/...`).
-    *   Build the UI components (`src/client/...` or `src/features/...`).
-    *   Connect UI to backend using Wasp operations.
-    *   Test and refine.
-6.  **Documentation:** Asking the AI to document implemented features (e.g., in `ai/docs/`).
-7.  **Iteration:** Repeating the process for subsequent features, building upon the existing foundation, and revising the PLAN on-the-go as needed.
-
-
 ## Project Structure & Key Concepts
 
 *   `main.wasp`: The heart of the Wasp application. Defines routes, pages, operations (queries/actions), auth methods, jobs, APIs, etc. See [Rule 1](.cursor/rules/1-wasp-overview.mdc).
@@ -89,5 +79,3 @@ Refer to the `.cursor/rules/` directory for in-depth explanations of:
 *   Advanced Features & Troubleshooting ([Rule 6](.cursor/rules/6-advanced-troubleshooting.mdc))
 *   Possible Solutions Thinking Command ([Rule 7](.cursor/rules/7-possible-solutions-thinking.mdc)) **pass this in manually with @ in the cursor chat**
 *   Deployment guidelines ([Rule 8](.cursor/rules/8-deployment.mdc))
-
-Enjoy the video and happy vibe coding!
