@@ -1,8 +1,8 @@
 # Vibe Coding a Full-Stack Budget App: YouTube Series Starter
 
-<!-- [![Link to YouTube Video](https://img.youtube.com/vi/YOUR_YOUTUBE_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_YOUTUBE_VIDEO_ID)  -->
+[![Link to YouTube Video](https://img.youtube.com/vi/WYzEROo7reY/0.jpg)](https://www.youtube.com/watch?v=WYzEROo7reY) 
 
-This repository contains the starter code for the walkthrough video (coming later today!) demonstrating how to "vibe code" a full-featured, full-stack web application using Wasp, React, Shadcn/ui, and AI assistance (like Cursor + Gemini 2.5 Pro).
+This repository contains the starter code for the [walkthrough video](https://www.youtube.com/watch?v=WYzEROo7reY) demonstrating how to "vibe code" a full-featured, full-stack web application using Wasp, React, Shadcn/ui, and AI assistance (like Cursor + Gemini 2.5 Pro).
 
 The goal is to showcase a realistic workflow for building complex applications collaboratively with an AI, focusing on a vertical slice approach to deliver features incrementally. 
 
