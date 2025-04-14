@@ -1,32 +1,93 @@
-## Vibe Coding a Full-Featured, Full-stack App
+# Vibe Coding a Full-Stack Budget App: YouTube Series Starter
 
-> Goal of this project: do a complete walkthrough of how I vibe code full-featured, full-stack web apps and have it be a realistic view into what it means to "vibe code" and use these apps
+[![Link to YouTube Video](https://img.youtube.com/vi/YOUR_YOUTUBE_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_YOUTUBE_VIDEO_ID) 
 
-> I've found a decent approach to "vibe coding" with Cursor and Gemini 2.5 pro. so we're going to "vibe code" a full-stack, collaborative envelope budgeting app which is relatively complex in that you could easily replace a paid SaaS app or two with it (YNAB charges $10 a month, for example).
+This repository contains the starter code for the walkthrough video demonstrating how to "vibe code" a full-featured, full-stack web application using Wasp, React, Shadcn/ui, and AI assistance (like Cursor + Gemini 2.5 Pro).
 
-> I spent a few days getting the process down and this is what I found that works (i.e. using a fullstack framework with batteries included and a component library so the LLM has an easier time handling features across the entire stack (vertically) and doesn't have to style a bunch of stuff from scratch)
+The goal is to showcase a realistic workflow for building complex applications collaboratively with an AI, focusing on a vertical slice approach to deliver features incrementally. 
+
+We'll be building a collaborative envelope budgeting app inspired by tools like YNAB.
+
+## Intro
+
+"Vibe coding," as demonstrated in the video, involves:
+
+1.  **Starting with a solid foundation:** Using a full-stack framework with "batteries included" (Wasp) and a pre-built component library (Shadcn-admin) to minimize boilerplate and styling overhead.
+2.  **Leveraging AI effectively:** Using tools like Cursor with detailed AI Rules (`.cursor/rules/`) to guide the AI's understanding of the project structure, conventions, and technologies.
+3.  **Structured Development:** Defining requirements (like a PRD), creating actionable plans, and implementing features using a vertical slice pattern (building a thin slice of functionality end-to-end).
+4.  **Iterative Refinement:** Working *with* the AI, reviewing its suggestions, testing assumptions, and gradually adding complexity.
+
+## Tech Stack
+
+*   **Framework:** [Wasp](https://wasp-lang.dev/) - A full-stack framework using a declarative DSL to integrate React, Node.js, and Prisma. It handles boilerplate like auth, database operations, and build processes.
+*   **UI Components:** [Shadcn-admin](https://github.com/satnaing/shadcn-admin/) - Admin Dashboard UI built with Shadcn and Vite.
+*   **AI Assistance:** [Cursor](https://cursor.sh/) / Gemini 2.5 Pro (or your preferred AI coding tool)
+
+## Getting Started (Following Along)
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/wasp-lang/vibe-coding-video.git
+    cd vibe-coding-video
+    ```
+2.  **Install Wasp:** 
+    ```bash
+    curl -sSL https://get.wasp.sh/installer.sh | sh
+    ```
+3.  **Set up Environment Variables:**
+    *   Copy the example server environment file: `cp .env.server.example .env.server`
+4.  **Database Setup:**
+    * Start a local PostgreSQL instance (make sure to have [docker](https://www.docker.com/) installed and running)
+        ```bash
+        wasp db start
+        ```
+    *   Run the initial database migration:
+        ```bash
+        wasp db migrate-dev
+        ```
+5.  **Start the Development Server:**
+    ```bash
+    wasp start
+    ```
+    This will launch the frontend (React app) and the backend server. Open your browser to `http://localhost:3000`.
+
+## The Workflow (As Seen in the Video)
+
+The YouTube video demonstrates a workflow similar to this:
+
+1.  **Understanding the Goal:** Defining the features of the collaborative budgeting app.
+2.  **AI Setup:** Ensuring the AI (Cursor) has access to the project rules (`./cursor/rules/`).
+3.  **PRD (Product Requirements Document):** Collaboratively defining the app's requirements with the AI.
+4.  **Planning:** Breaking down the PRD into actionable, step-by-step implementation tasks suitable for the vertical slice approach.
+5.  **Implementation (Vertical Slices):**
+    *   Pick a small, end-to-end feature slice (e.g., basic manual transaction entry).
+    *   Define the necessary database models (`schema.prisma`).
+    *   Define Wasp operations (queries/actions) in `main.wasp`.
+    *   Implement server logic for operations (`src/server/...`).
+    *   Build the UI components (`src/client/...` or `src/features/...`).
+    *   Connect UI to backend using Wasp operations.
+    *   Test and refine.
+6.  **Documentation:** Asking the AI to document implemented features (e.g., in `ai/docs/`).
+7.  **Iteration:** Repeating the process for subsequent features, building upon the existing foundation, and revising the PLAN on-the-go as needed.
 
 
-## Basic Approach
+## Project Structure & Key Concepts
 
-- Start with a strong template
-- Use battle-tested RULES FOR AI file(s)
-- Create & revise PRD, and then a PLAN 
-- Use the vertical slice pattern 
-- Ask LLM to test your assumptions
+*   `main.wasp`: The heart of the Wasp application. Defines routes, pages, operations (queries/actions), auth methods, jobs, APIs, etc. See [Rule 1](.cursor/rules/1-wasp-overview.mdc).
+*   `schema.prisma`: Defines the database models (entities). See [Rule 3](.cursor/rules/3-database-operations.mdc).
+*   `src/`: Contains your custom React (client) and Node.js (server) code.
+    *   `src/features/`: Fullstack code is organized by feature (e.g., `auth`, `transactions`).
+    *   `src/components/`: Reusable UI components, including those based on Shadcn/ui. See [Rule 5](.cursor/rules/5-frontend-styling.mdc).
+*   `.cursor/rules/`: Contains detailed markdown files explaining project conventions, Wasp features, and best practices used in this project. **Crucial for guiding the AI.**
 
-## Prompts
+Refer to the `.cursor/rules/` directory for in-depth explanations of:
+*   Wasp Overview & Core Concepts ([Rule 1](.cursor/rules/1-wasp-overview.mdc))
+*   Project Conventions ([Rule 2](.cursor/rules/2-project-conventions.mdc))
+*   Database, Entities & Operations ([Rule 3](.cursor/rules/3-database-operations.mdc))
+*   Authentication ([Rule 4](.cursor/rules/4-authentication.mdc))
+*   Frontend & Styling ([Rule 5](.cursor/rules/5-frontend-styling.mdc))
+*   Advanced Features & Troubleshooting ([Rule 6](.cursor/rules/6-advanced-troubleshooting.mdc))
+*   Possible Solutions Thinking Command ([Rule 7](.cursor/rules/7-possible-solutions-thinking.mdc)) **pass this in manually with @ in the cursor chat**
+*   Deployment guidelines ([Rule 8](.cursor/rules/8-deployment.mdc))
 
-### PRD / initial prompt
-
-> I want to create a collaborative envelope budgeting app with the current template project I'm in which uses Wasp and Shadcn-ui components (it's an admin dashboard). Leveraging Wasp's full-stack features (such as Auth), let's build the app based on the following spec: - User's have one budget profile they use. - User's can invite others to collaborate on the budget with them via their email. - Transactions can be individually entered manually or bulk imported via csv files from their bank. - Bulk import shouldn't assume a certain csv file format, but rather map the headers to a set of predefined values within the app (e.g. Date, Description, Value, Type (expense or income)). - New features should be styled and created using the demo features in `src/features` as examples. - Use a modified vertical slice implmentation approach that's suitable for LLM-assisted coding. 
-
-> With this in mind, I want you to first evaluate the project template and think about a few possible PRD approaches before landing on the best one. Provide reasoning why this would be the best approach. Remember we're using Wasp, a full-stack framework with batteries included, that can do some of the heavy lifting for us, we don't need to create an enterprise-level app (it will be for personal use), and we want to use a vertical slice implementation approach so we can start with basic implementations of features first, and add on complexity from there
-
-### Plan prompt
-
-> From this PRD, create an actionable, step-by-step plan that we can use as a guide for LLM-assisted coding. Before you create the plan, think about a few different plan styles that would be suitable for this project and the implmentation style before selecting the best one. Give your reasoning for why you think we should use this plan style. Remember that we will constantly refer to this plan to guide our coding implementation so it should be well structured, concise, and actionable, while still providing enough information to guide the LLM.
-
-### Doc prompt
-
-> Great. Now that we've finished implementing that phase can you please document it in `ai/docs` according to the predefined conventions. Remeber you don't need to repeat info that already exists in project files, rather describe the implementation--and point to the file where the implementation can be found--so that it can be referenced by human and LLLM devs to aid in further development.
+Enjoy the video and happy vibe coding!
