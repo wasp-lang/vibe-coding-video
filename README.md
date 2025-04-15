@@ -63,6 +63,8 @@ The YouTube video demonstrates a workflow similar to this:
 
 ## Project Structure & Key Concepts
 
+### Codebase Structure
+
 *   `main.wasp`: The heart of the Wasp application. Defines routes, pages, operations (queries/actions), auth methods, jobs, APIs, etc. See [Rule 1](.cursor/rules/1-wasp-overview.mdc).
 *   `schema.prisma`: Defines the database models (entities). See [Rule 3](.cursor/rules/3-database-operations.mdc).
 *   `src/`: Contains your custom React (client) and Node.js (server) code.
@@ -70,6 +72,7 @@ The YouTube video demonstrates a workflow similar to this:
     *   `src/components/`: Reusable UI components, including those based on Shadcn/ui. See [Rule 5](.cursor/rules/5-frontend-styling.mdc).
 *   `.cursor/rules/`: Contains detailed markdown files explaining project conventions, Wasp features, and best practices used in this project. **Crucial for guiding the AI.**
 
+### Project Conventions
 Refer to the `.cursor/rules/` directory for in-depth explanations of:
 *   Wasp Overview & Core Concepts ([Rule 1](.cursor/rules/1-wasp-overview.mdc))
 *   Project Conventions ([Rule 2](.cursor/rules/2-project-conventions.mdc))
@@ -79,3 +82,6 @@ Refer to the `.cursor/rules/` directory for in-depth explanations of:
 *   Advanced Features & Troubleshooting ([Rule 6](.cursor/rules/6-advanced-troubleshooting.mdc))
 *   Possible Solutions Thinking Command ([Rule 7](.cursor/rules/7-possible-solutions-thinking.mdc)) **pass this in manually with @ in the cursor chat**
 *   Deployment guidelines ([Rule 8](.cursor/rules/8-deployment.mdc))
+
+### Example Prompts
+Example prompts that were used in the video can be found in `ai/example-prompts.md`, along with the PRD (`ai/example-prd.md`) and plan (`ai/example-plan.md`) generated from them.
