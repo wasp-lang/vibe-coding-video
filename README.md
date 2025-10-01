@@ -44,9 +44,7 @@ The YouTube video demonstrates a workflow similar to this:
     ```bash
     curl -sSL https://get.wasp.sh/installer.sh | sh
     ```
-3.  **Set up Environment Variables:**
-    *   Copy the example server environment file: `cp .env.server.example .env.server`
-4.  **Database Setup:**
+3.  **Database Setup:**
     * Start a local PostgreSQL instance (make sure to have [docker](https://www.docker.com/) installed and running)
         ```bash
         wasp db start
@@ -55,7 +53,7 @@ The YouTube video demonstrates a workflow similar to this:
         ```bash
         wasp db migrate-dev
         ```
-5.  **Start the Development Server:**
+4.  **Start the Development Server:**
     ```bash
     wasp start
     ```
