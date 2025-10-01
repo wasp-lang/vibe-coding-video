@@ -10,7 +10,7 @@ We'll be building a collaborative envelope budgeting app inspired by tools like 
 
 ## Tech Stack
 
-*   **Framework:** [Wasp](https://wasp-lang.dev/) - A full-stack framework using a declarative DSL to integrate React, Node.js, and Prisma. It handles boilerplate like auth, database operations, and build processes.
+*   **Framework:** [Wasp](https://wasp.sh/) - A full-stack framework using a declarative DSL to integrate React, Node.js, and Prisma. It handles boilerplate like auth, database operations, and build processes.
 *   **UI Components:** [Shadcn-admin](https://github.com/satnaing/shadcn-admin/) - Admin Dashboard UI built with Shadcn and Vite.
 *   **AI Assistance:** [Cursor](https://cursor.sh/) / Gemini 2.5 Pro (or your preferred AI coding tool)
 
